@@ -8,7 +8,7 @@ namespace RobloxLimitedsAPI.Services
           Task<List<Items>> GetAllItemsAsync();
 
           // Fetches a single item by ID, or returns null if not found
-          Task<Items> GetItemsByIdAsync(int id);
+          Task<Items?> GetItemsByIdAsync(int id);
 
           // Adds a new item and returns the newly created item
           Task<Items> AddItemsAsync(Items item);
