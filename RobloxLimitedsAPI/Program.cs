@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using RobloxLimitedsAPI.Data;
 using RobloxLimitedsAPI.Services;
 using Scalar.AspNetCore;
 
@@ -8,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Tells the app: Whenever a controller asks for IRobloxLimitedsService, hand it RobloxLimitedsService automatically. Reset it for every new request.
 builder.Services.AddScoped<IRobloxLimitedsService, RobloxLimitedsService>();
