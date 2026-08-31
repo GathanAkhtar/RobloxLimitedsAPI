@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RobloxLimitedsAPI.Dtos;
 using RobloxLimitedsAPI.Models;
 using RobloxLimitedsAPI.Services;
 
@@ -13,7 +14,7 @@ namespace RobloxLimitedsAPI.Controllers
 
           // Handles GET requests to fetch all limited items as JSON wrapped in HTTP 200 OK
           [HttpGet]
-          public async Task<ActionResult<List<Items>>> GetLimiteds()
+          public async Task<ActionResult<List<GetItemsResponseDto>>> GetLimiteds()
                => Ok(await service.GetAllItemsAsync());
           
           [HttpGet("{id}")]

@@ -1,17 +1,18 @@
-﻿using RobloxLimitedsAPI.Models;
+﻿using RobloxLimitedsAPI.Dtos;
+using RobloxLimitedsAPI.Models;
 
 namespace RobloxLimitedsAPI.Services
 {
      public interface IRobloxLimitedsService
      {
           // Fetches and returns all items asynchronously as a list
-          Task<List<Items>> GetAllItemsAsync();
+          Task<List<GetItemsResponseDto>> GetAllItemsAsync();
 
           // Fetches a single item by ID, or returns null if not found
-          Task<Items?> GetItemsByIdAsync(int id);
+          Task<GetItemsResponseDto?> GetItemsByIdAsync(int id);
 
           // Adds a new item and returns the newly created item
-          Task<Items> AddItemsAsync(Items item);
+          Task<GetItemsResponseDto> AddItemsAsync(Items item);
 
           // Updates an existing item by ID and returns true if successful, false if not found
           Task<bool> UpdateItemsAsync(int id, Items item);

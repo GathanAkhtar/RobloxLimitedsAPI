@@ -1,16 +1,14 @@
-﻿using RobloxLimitedsAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using RobloxLimitedsAPI.Data;
+using RobloxLimitedsAPI.Dtos;
+using RobloxLimitedsAPI.Models;
 
 namespace RobloxLimitedsAPI.Services
 {
-     public class RobloxLimitedsService : IRobloxLimitedsService
+     public class RobloxLimitedsService(AppDbContext context) : IRobloxLimitedsService
      {
-          static List<Items> item = new List<Items> {
-               new Items { Id = 1, Name = "Transient Harmonica", AssetType = "Face", Value = 100 },
-               new Items { Id = 2, Name = "Domino Crown", AssetType = "Hat", Value = 200 },
-               new Items { Id = 3, Name = "Red SQL Bandana", AssetType = "Face", Value = 300 },
-               new Items { Id = 4, Name = "Bighead", AssetType = "Hat", Value = 100 }
-          };
-          public Task<Items> AddItemsAsync(Items item)
+
+          public Task<GetItemsResponseDto> AddItemsAsync(Items item)
           {
                throw new NotImplementedException();
           }
@@ -20,13 +18,27 @@ namespace RobloxLimitedsAPI.Services
                throw new NotImplementedException();
           }
 
-          public async Task<List<Items>> GetAllItemsAsync()
-               => await Task.FromResult(item);
+          public async Task<List<GetItemsResponseDto>> GetAllItemsAsync()
+               => await context.Items.Select(c => new GetItemsResponseDto
+               {
+                    Name = c.Name,
+                    AssetType = c.AssetType,
+                    Value = c.Value
+               }).ToListAsync();
 
-          public async Task<Items?> GetItemsByIdAsync(int id)
+          public async Task<GetItemsResponseDto?> GetItemsByIdAsync(int id)
           {
-               var result = item.FirstOrDefault(i => i.Id == id);
-               return await Task.FromResult(result);
+               var result = await context.Items
+                    .Where(c => c.Id == id)
+                    .Select(c => new GetItemsResponseDto
+                    {
+                         Name = c.Name,
+                         AssetType = c.AssetType,
+                         Value = c.Value
+                    })
+                    .FirstOrDefaultAsync();
+               
+               return result;
           }
 
           public Task<bool> UpdateItemsAsync(int id, Items item)
