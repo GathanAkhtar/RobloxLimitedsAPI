@@ -7,20 +7,43 @@ namespace RobloxLimitedsAPI.Services
 {
      public class RobloxLimitedsService(AppDbContext context) : IRobloxLimitedsService
      {
-
-          public Task<GetItemsResponseDto> AddItemsAsync(Items item)
+          // Converts the incoming DTO into a database entity, saves it to SQL Server, and returns the saved item as a DTO
+          public async Task<GetItemsResponseDto> AddItemsAsync(CreateItemRequest item)
           {
-               throw new NotImplementedException();
+               var newItems = new Items
+               {
+                    Name = item.Name,
+                    AssetType = item.AssetType,
+                    Value = item.Value
+               };
+               
+               context.Items.Add(newItems);
+               await context.SaveChangesAsync();
+
+               return new GetItemsResponseDto
+               {
+                    Id = newItems.Id,
+                    Name = newItems.Name,
+                    AssetType = newItems.AssetType,
+                    Value = newItems.Value
+               };
           }
 
-          public Task<bool> DeleteItemsAsync(int id)
+          public async Task<bool> DeleteItemsAsync(int id)
           {
-               throw new NotImplementedException();
+               var ItemtoDelete = await context.Items.FindAsync(id);
+               if (ItemtoDelete is null) 
+               return false;
+               
+               context.Items.Remove(ItemtoDelete);
+               await context.SaveChangesAsync();
+               return true;
           }
 
           public async Task<List<GetItemsResponseDto>> GetAllItemsAsync()
                => await context.Items.Select(c => new GetItemsResponseDto
                {
+                    Id = c.Id,
                     Name = c.Name,
                     AssetType = c.AssetType,
                     Value = c.Value
@@ -41,9 +64,17 @@ namespace RobloxLimitedsAPI.Services
                return result;
           }
 
-          public Task<bool> UpdateItemsAsync(int id, Items item)
+          public async Task<bool> UpdateItemsAsync(int id, UpdateItemRequest item)
           {
-               throw new NotImplementedException();
+               var existingItem = await context.Items.FindAsync(id);
+               if (existingItem is null) return false;
+
+               existingItem.Name = item.Name;
+               existingItem.AssetType = item.AssetType;
+               existingItem.Value = item.Value;
+
+               await context.SaveChangesAsync();
+               return true;
           }
      }
 }

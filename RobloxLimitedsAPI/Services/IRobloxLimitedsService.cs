@@ -12,10 +12,10 @@ namespace RobloxLimitedsAPI.Services
           Task<GetItemsResponseDto?> GetItemsByIdAsync(int id);
 
           // Adds a new item and returns the newly created item
-          Task<GetItemsResponseDto> AddItemsAsync(Items item);
+          Task<GetItemsResponseDto> AddItemsAsync(CreateItemRequest item);
 
           // Updates an existing item by ID and returns true if successful, false if not found
-          Task<bool> UpdateItemsAsync(int id, Items item);
+          Task<bool> UpdateItemsAsync(int id, UpdateItemRequest item);
 
           // Removes an item by ID and returns true if deleted, false if not found
           Task<bool> DeleteItemsAsync(int id);

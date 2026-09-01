@@ -1,6 +1,6 @@
 ﻿namespace RobloxLimitedsAPI.Dtos
 {
-     public class GetItemsResponseDto
+     public class UpdateItemRequest
      {
           public int Id { get; set; }
           public string Name { get; set; } = string.Empty;
